@@ -40,5 +40,18 @@ namespace CRUDOperationWithDapper.Controllers
         {
             return Ok(await _employee.EmployeeDelete(employee));
         }
+
+        [HttpGet("GetEmployeeListFunc")]
+        public async Task<IActionResult> GetEmployeeListFunc()
+        {
+            return Ok(await _employee.getEmployeeListWithfunc());
+        }
+
+        [HttpPost("EmployeeInsertProc")]
+        public async Task<IActionResult> EmployeeInsertProc(Employee employee)
+        {
+            await _employee.EmployeeInsertProc(employee);
+            return Ok();
+        }
     }
 }

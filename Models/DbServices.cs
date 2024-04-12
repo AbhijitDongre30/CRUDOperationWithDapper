@@ -13,7 +13,22 @@ namespace CRUDOperationWithDapper.Models
             _connection = new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
-        
+        public async Task<List<T>> GetAllRecordsWithfunc<T>(string command, object param)
+        {
+            try
+            {
+                List<T> result = (await _connection.QueryAsync<T>(command, param)).ToList();
+                return result;
+            }
+            catch (Exception  ex)
+            {
+                throw new Exception("Error:", ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
 
         public async Task<int> InsertUpdateDeleteInline<T>(string command, object param)
         {
@@ -49,9 +64,27 @@ namespace CRUDOperationWithDapper.Models
             }
         }
 
+        public async Task InsertUpdateDeleteProcedure<T>(string command, object param)
+        {
+            try
+            {
+                var result = (await _connection.ExecuteAsync(command, param, commandType: System.Data.CommandType.StoredProcedure));                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error:", ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
         public void Dispose()
         {
             _connection.Dispose();
         }
+
+       
     }
 }
