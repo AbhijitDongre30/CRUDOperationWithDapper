@@ -63,13 +63,52 @@ namespace CRUDOperationWithDapper.Models
             parameters.Add("@p_firstname", employee.firstname, DbType.String);
             parameters.Add("@p_lastname", employee.lastname, DbType.String);
             parameters.Add("@p_mobileno", employee.mobileno, DbType.String);
+            parameters.Add("@p_flag", "Insert", DbType.String);
             parameters.Add("@p_salary", Convert.ToInt32(employee.salary), DbType.Decimal);
             parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            int response = await _dbServices.InsertUpdateDeleteProcedure<Employee>("insert_employee", parameters);
+            int response = await _dbServices.InsertUpdateDeleteProcedure<Employee>("crud_employee", parameters);
             if (response != 0)
                 result = "Inserted Successfully";
             else
                 result = "Failed to insert";
+
+            return result;
+        }
+
+        public async Task<string> EmployeeDeleteProc(Employee employee)
+        {
+            string result = string.Empty;
+            var parameters = new DynamicParameters();
+            parameters.Add("@p_firstname", employee.firstname, DbType.String);
+            parameters.Add("@p_lastname", employee.lastname, DbType.String);
+            parameters.Add("@p_mobileno", employee.mobileno, DbType.String);
+            parameters.Add("@p_flag", "Delete", DbType.String);
+            parameters.Add("@p_salary", Convert.ToInt32(employee.salary), DbType.Decimal);
+            parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            int response = await _dbServices.InsertUpdateDeleteProcedure<Employee>("crud_employee", parameters);
+            if (response != 0)
+                result = "Deleted Successfully";
+            else
+                result = "Failed to delete";
+
+            return result;
+        }
+
+        public async Task<string> EmployeeUpdateProc(Employee employee)
+        {
+            string result = string.Empty;
+            var parameters = new DynamicParameters();
+            parameters.Add("@p_firstname", employee.firstname, DbType.String);
+            parameters.Add("@p_lastname", employee.lastname, DbType.String);
+            parameters.Add("@p_mobileno", employee.mobileno, DbType.String);
+            parameters.Add("@p_flag", "Update", DbType.String);
+            parameters.Add("@p_salary", Convert.ToInt32(employee.salary), DbType.Decimal);
+            parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            int response = await _dbServices.InsertUpdateDeleteProcedure<Employee>("crud_employee", parameters);
+            if (response != 0)
+                result = "Updated Successfully";
+            else
+                result = "Failed to Update";
 
             return result;
         }

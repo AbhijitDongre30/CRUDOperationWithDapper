@@ -85,8 +85,6 @@ namespace CRUDOperationWithDapper.Models
         public void Dispose()
         {
             _connection.Dispose();
-        }
-
-       
+        }       
     }
 }
