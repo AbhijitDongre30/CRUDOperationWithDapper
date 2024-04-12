@@ -9,6 +9,6 @@ namespace CRUDOperationWithDapper.Interfaces
         Task<string> EmployeeInsert(Employee employee);
         Task<string> EmployeeUpdate(Employee employee);
         Task<string> EmployeeDelete(Employee employee);
-        Task EmployeeInsertProc(Employee employee);
+        Task<string> EmployeeInsertProc(Employee employee);
     }
 }

@@ -11,7 +11,6 @@ namespace CRUDOperationWithDapper.Models
         {
             _dbServices = dbServices;
         }
-
         public async Task<string> EmployeeInsert(Employee employee)
         {
             string result = string.Empty;
@@ -23,14 +22,12 @@ namespace CRUDOperationWithDapper.Models
 
             return result;
         }
-
         public async  Task<List<Employee>> getEmployeeList()
         {
             List<Employee> lstemployee = new List<Employee>();
             lstemployee = await _dbServices.SelectInline<Employee>("select firstname,lastname,mobileno,salary from employee order by firstname", null);
             return lstemployee;
         }
-
         public async Task<string> EmployeeUpdate(Employee employee)
         {
             string result = string.Empty;
@@ -53,23 +50,28 @@ namespace CRUDOperationWithDapper.Models
 
             return result;
         }
-
         public async Task<List<Employee>> getEmployeeListWithfunc()
         {
             List<Employee> lstemployee = new List<Employee>();
             lstemployee = await _dbServices.GetAllRecordsWithfunc<Employee>("select * from getAllRecords()", null);
             return lstemployee;
         }
-
-        public async Task EmployeeInsertProc(Employee employee)
+        public async Task<string> EmployeeInsertProc(Employee employee)
         {
+            string result = string.Empty;
             var parameters = new DynamicParameters();
             parameters.Add("@p_firstname", employee.firstname, DbType.String);
             parameters.Add("@p_lastname", employee.lastname, DbType.String);
             parameters.Add("@p_mobileno", employee.mobileno, DbType.String);
             parameters.Add("@p_salary", Convert.ToInt32(employee.salary), DbType.Decimal);
             parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            await _dbServices.InsertUpdateDeleteProcedure<Employee>("insert_employee", parameters);          
+            int response = await _dbServices.InsertUpdateDeleteProcedure<Employee>("insert_employee", parameters);
+            if (response != 0)
+                result = "Inserted Successfully";
+            else
+                result = "Failed to insert";
+
+            return result;
         }
     }
 }

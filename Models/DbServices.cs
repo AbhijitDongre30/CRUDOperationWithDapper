@@ -64,11 +64,13 @@ namespace CRUDOperationWithDapper.Models
             }
         }
 
-        public async Task InsertUpdateDeleteProcedure<T>(string command, object param)
+        public async Task<int> InsertUpdateDeleteProcedure<T>(string command, DynamicParameters param)
         {
             try
             {
-                var result = (await _connection.ExecuteAsync(command, param, commandType: System.Data.CommandType.StoredProcedure));                
+               await _connection.ExecuteAsync(command, param, commandType: System.Data.CommandType.StoredProcedure);
+               int output = param.Get<int>("@result");
+               return output;
             }
             catch (Exception ex)
             {

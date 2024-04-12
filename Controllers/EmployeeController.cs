@@ -50,8 +50,7 @@ namespace CRUDOperationWithDapper.Controllers
         [HttpPost("EmployeeInsertProc")]
         public async Task<IActionResult> EmployeeInsertProc(Employee employee)
         {
-            await _employee.EmployeeInsertProc(employee);
-            return Ok();
+            return Ok(await _employee.EmployeeInsertProc(employee));
         }
     }
 }
